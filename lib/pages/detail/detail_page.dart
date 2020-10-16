@@ -26,6 +26,7 @@ import 'package:doubanapp/widgets/loading_widget.dart';
 import '../../bean/movie_long_comments_entity.dart';
 import '../../widgets/bottom_drag_widget.dart';
 import 'long_comment_widget.dart';
+import 'package:flutter/material.dart' hide Router;
 
 ///影片、电视详情页面
 class DetailPage extends StatefulWidget {
@@ -247,7 +248,7 @@ class _DetailPageState extends State<DetailPage> {
               ],
             ),
             onTap: () {
-              Router.push(context, Router.personDetailPage,
+              RouterDouB.push(context, RouterDouB.personDetailPage,
                   {'personImgUrl': imgUrl, 'id': id});
             },
           ),
@@ -327,7 +328,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ),
                     onTap: () {
-                      Router.push(context, Router.playListPage,
+                      RouterDouB.push(context, RouterDouB.playListPage,
                           _movieDetailBean.trailers);
                     },
                   );
@@ -493,7 +494,7 @@ class _DetailPageState extends State<DetailPage> {
               padding: EdgeInsets.all(12.0),
             ),
             onTap: () {
-              Router.push(context, bean.author.alt, {'title': '个人主页'});
+              RouterDouB.push(context, bean.author.alt, {'title': '个人主页'});
             },
           );
         }

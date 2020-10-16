@@ -160,7 +160,7 @@ class _MoviePageState extends State<MoviePage>  with AutomaticKeepAliveClientMix
         ),
       ),
       onTap: () {
-        Router.push(context, Router.detailPage, comingSoonBean.id);
+        RouterDouB.push(context, RouterDouB.detailPage, comingSoonBean.id);
       },
     );
   }
@@ -205,7 +205,7 @@ class _MoviePageState extends State<MoviePage>  with AutomaticKeepAliveClientMix
         ),
       ),
       onTap: () {
-        Router.push(context, Router.detailPage, hotMovieBean.id);
+        RouterDouB.push(context, RouterDouB.detailPage, hotMovieBean.id);
       },
     );
   }
@@ -338,7 +338,7 @@ class _MoviePageState extends State<MoviePage>  with AutomaticKeepAliveClientMix
                   mainAxisSpacing: 0.0,
                   childAspectRatio: _getRadio())),
           getCommonImg(Constant.IMG_TMP1, (){
-            Router.pushNoParams(context, "http://www.flutterall.com");
+            RouterDouB.pushNoParams(context, "http://www.flutterall.com");
           }),
           SliverToBoxAdapter(
             child: Padding(

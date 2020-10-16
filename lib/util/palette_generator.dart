@@ -58,7 +58,7 @@ import 'package:flutter/painting.dart';
 ///   * [PaletteTarget], to be able to create your own target color types.
 ///   * [PaletteFilter], a function signature for filtering the allowed colors
 ///     in the palette.
-class PaletteGenerator extends Diagnosticable {
+class PaletteGenerator {
   /// Create a [PaletteGenerator] from a set of paletteColors and targets.
   ///
   /// The usual way to create a [PaletteGenerator] is to use the asynchronous
@@ -354,7 +354,6 @@ class PaletteGenerator extends Diagnosticable {
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
     properties.add(IterableProperty<PaletteColor>(
         'paletteColors', paletteColors,
         defaultValue: <PaletteColor>[]));
@@ -372,7 +371,7 @@ class PaletteGenerator extends Diagnosticable {
 /// See also:
 ///
 ///   * [PaletteGenerator], a class for selecting color palettes from images.
-class PaletteTarget extends Diagnosticable {
+class PaletteTarget {
   /// Creates a [PaletteTarget] for custom palette selection.
   ///
   /// None of the arguments can be null.
@@ -565,7 +564,6 @@ class PaletteTarget extends Diagnosticable {
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
     final PaletteTarget defaultTarget = PaletteTarget();
     properties.add(DoubleProperty('minimumSaturation', minimumSaturation,
         defaultValue: defaultTarget.minimumSaturation));
@@ -600,7 +598,7 @@ typedef _ContrastCalculator = double Function(Color a, Color b, int alpha);
 /// See also:
 ///
 ///   * [PaletteGenerator], a class for selecting color palettes from images.
-class PaletteColor extends Diagnosticable {
+class PaletteColor {
   /// Generate a [PaletteColor].
   ///
   /// The `color` and `population` parameters must not be null.
@@ -766,7 +764,6 @@ class PaletteColor extends Diagnosticable {
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Color>('color', color));
     properties
         .add(DiagnosticsProperty<Color>('titleTextColor', titleTextColor));

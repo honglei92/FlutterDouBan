@@ -21,7 +21,7 @@ class GroupPage extends StatelessWidget {
             margin: EdgeInsets.all(Constant.MARGIN_RIGHT),
             hintText: hintText,
             onTab: () {
-              Router.push(context, Router.searchPage, hintText);
+              RouterDouB.push(context, RouterDouB.searchPage, hintText);
             },
           ),
           Expanded(
@@ -133,7 +133,7 @@ class _GroupWidgetState extends State<_GroupWidget> {
         ],
       ),
       onTap: () {
-        Router.push(context, Router.detailPage, bean.id);
+        RouterDouB.push(context, RouterDouB.detailPage, bean.id);
       },
     );
   }

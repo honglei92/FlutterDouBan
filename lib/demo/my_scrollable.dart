@@ -567,6 +567,11 @@ class ScrollableState extends State<Scrollable>
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<ScrollPosition>('position', position));
   }
+
+  @override
+  void saveOffset(double offset) {
+    // TODO: implement saveOffset
+  }
 }
 
 /// With [_ScrollSemantics] certain child [SemanticsNode]s can be

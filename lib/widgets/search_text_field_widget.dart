@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 ///文本搜索框
 class SearchTextFieldWidget extends StatelessWidget {
   final ValueChanged<String> onSubmitted;
@@ -6,7 +7,8 @@ class SearchTextFieldWidget extends StatelessWidget {
   final String hintText;
   final EdgeInsetsGeometry margin;
 
-  SearchTextFieldWidget({Key key, this.hintText, this.onSubmitted, this.onTab, this.margin})
+  SearchTextFieldWidget(
+      {Key key, this.hintText, this.onSubmitted, this.onTab, this.margin})
       : super(key: key);
 
   @override
@@ -24,7 +26,8 @@ class SearchTextFieldWidget extends StatelessWidget {
         onTap: onTab,
         cursorColor: Color.fromARGB(255, 0, 189, 96),
         decoration: InputDecoration(
-            contentPadding: const EdgeInsets.only(top: 8.0),
+            // contentPadding: const EdgeInsets.only(top: 8.0),
+            contentPadding: EdgeInsets.all(0),
             border: InputBorder.none,
             hintText: hintText,
             hintStyle: TextStyle(
@@ -51,7 +54,7 @@ class SearchTextFieldWidget extends StatelessWidget {
         onSubmitted: onSubmitted,
         cursorColor: Color.fromARGB(255, 0, 189, 96),
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.all(0),
             border: InputBorder.none,
             hintText: hintText,
             hintStyle: TextStyle(fontSize: 20),

@@ -19,24 +19,17 @@ class HomePage extends StatelessWidget {
   }
 }
 
-var _tabs = ['动态', '推荐'];
+var _tabs = ['推荐', '科技', '财经'];
 
 DefaultTabController getWidget() {
   return DefaultTabController(
-    initialIndex: 1,
+    initialIndex: 0,
     length: _tabs.length, // This is the number of tabs.
     child: NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         // These are the slivers that show up in the "outer" scroll view.
         return <Widget>[
           SliverOverlapAbsorber(
-            // This widget takes the overlapping behavior of the SliverAppBar,
-            // and redirects it to the SliverOverlapInjector below. If it is
-            // missing, then it is possible for the nested "inner" scroll view
-            // below to end up under the SliverAppBar even when the inner
-            // scroll view thinks it has not been scrolled.
-            // This is not necessary if the "headerSliverBuilder" only builds
-            // widgets that do not overlap the next sliver.
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
             sliver: myapp.SliverAppBar(
               pinned: true,
@@ -48,24 +41,27 @@ DefaultTabController getWidget() {
                 collapseMode: CollapseMode.pin,
                 background: Container(
                   color: Colors.green,
-                  child: SearchTextFieldWidget(
-                    hintText: '影视作品中你难忘的离别',
-                    margin: const EdgeInsets.only(left: 15.0, right: 15.0),
-                    onTab: () {
-                      RouterDouB.push(context, RouterDouB.searchPage, '影视作品中你难忘的离别');
-                    },
-                  ),
+                  child: new Row(children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(left: 15.0),
+                        child: Image.asset(
+                          Constant.ASSETS_IMG + 'ic_launcher.png',
+                          width: 40.0,
+                          height: 40.0,
+                        )),
+                    Expanded(
+                      child: SearchTextFieldWidget(
+                        hintText: '搜索',
+                        margin: const EdgeInsets.only(left: 7.0, right: 15.0),
+                        onTab: () {
+                          RouterDouB.push(context, RouterDouB.searchPage, '搜索');
+                        },
+                      ),
+                    ),
+                  ]),
                   alignment: Alignment(0.0, 0.0),
                 ),
               ),
-              // The "forceElevated" property causes the SliverAppBar to show
-              // a shadow. The "innerBoxIsScrolled" parameter is true when the
-              // inner scroll view is scrolled beyond its "zero" point, i.e.
-              // when it appears to be scrolled below the SliverAppBar.
-              // Without this, there are cases where the shadow would appear
-              // or not appear inappropriately, because the SliverAppBar is
-              // not actually aware of the precise position of the inner
-              // scroll views.
               bottomTextString: _tabs,
               bottom: TabBar(
                 // These are the widgets to put in each tab in the tab bar.
@@ -123,11 +119,6 @@ class _SliverContainerState extends State<SliverContainer> {
   List<Subject> list;
 
   void requestAPI() async {
-//    var _request = HttpRequest(API.BASE_URL);
-//    int start = math.Random().nextInt(220);
-//    final Map result = await _request.get(API.TOP_250 + '?start=$start&count=30');
-//    var resultList = result['subjects'];
-
     var _request = MockRequest();
     var result = await _request.get(API.TOP_250);
     var resultList = result['subjects'];
@@ -141,7 +132,10 @@ class _SliverContainerState extends State<SliverContainer> {
   }
 
   getContentSliver(BuildContext context, List<Subject> list) {
-    if (widget.name == _tabs[0]) {
+    if (widget.name == _tabs[1]) {
+      return _loginContainer(context);
+    }
+    if (widget.name == _tabs[2]) {
       return _loginContainer(context);
     }
 
@@ -153,20 +147,9 @@ class _SliverContainerState extends State<SliverContainer> {
       top: false,
       bottom: false,
       child: Builder(
-        // This Builder is needed to provide a BuildContext that is "inside"
-        // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
-        // find the NestedScrollView.
         builder: (BuildContext context) {
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
-            // The "controller" and "primary" members should be left
-            // unset, so that the NestedScrollView can control this
-            // inner scroll view.
-            // If the "controller" property is set, then this scroll
-            // view will not be associated with the NestedScrollView.
-            // The PageStorageKey should be unique to this ScrollView;
-            // it allows the list to remember its scroll position when
-            // the tab view is not on the screen.
             key: PageStorageKey<String>(widget.name),
             slivers: <Widget>[
               SliverOverlapInjector(
@@ -288,16 +271,17 @@ class _SliverContainerState extends State<SliverContainer> {
   }
 
   getContentVideo(int index) {
-    if(!mounted){
+    if (!mounted) {
       return Container();
     }
     return VideoWidget(
-      index == 1 ? Constant.URL_MP4_DEMO_0 :  Constant.URL_MP4_DEMO_1,
+      index == 1 ? Constant.URL_MP4_DEMO_0 : Constant.URL_MP4_DEMO_1,
       showProgressBar: false,
     );
   }
 }
-///动态TAB
+
+///动态 TAB
 _loginContainer(BuildContext context) {
   return Align(
     alignment: Alignment(0.0, 0.0),

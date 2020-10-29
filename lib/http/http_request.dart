@@ -11,7 +11,6 @@ class HttpRequest {
       [Map<String, String> queryParameters]) async {
     try {
       var httpClient = new HttpClient();
-      //http://api.douban.com/v2/movie/top250?start=25&count=10
       var uri = new Uri.http(authority, unencodedPath, queryParameters);
       var request = await httpClient.getUrl(uri);
       var response = await request.close();

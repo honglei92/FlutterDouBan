@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:doubanapp/widgets/search_text_field_widget.dart';
 import 'package:doubanapp/pages/home/home_app_bar.dart' as myapp;
@@ -11,15 +13,48 @@ import 'package:doubanapp/widgets/video_widget.dart';
 import 'package:doubanapp/router.dart';
 
 ///首页，TAB页面，显示动态和推荐TAB
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     print('build HomePage');
     return getWidget();
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLocationData();
+  }
+
+  void getLocationData() async {
+    Location location = Location();
+    await location.getcurrentLcoation();
+    NetworkHepler networkHepler = NetworkHelper(
+        'http://v.juhe.cn/weather/geo?format=2&key=0ca92484d26657567ffaf07472e1d075&dtype=json&lat=${location.latitude}&lon=${location.longitude}');
+    var weatherData = await networkHepler.getData();
+    updateUI(weatherData);
+  }
 }
 
 var _tabs = ['推荐', '科技', '财经'];
+double temperature;
+String cityName;
+
+void updateUI(dynamic weatherData) {
+  if (weatherData != null) {
+    if (weatherData['resultcode'] == 200) {
+      temperature = weatherData['main']['temp'];
+      cityName = weatherData['name'];
+      print(temperature);
+    }
+  }
+}
 
 DefaultTabController getWidget() {
   return DefaultTabController(
@@ -58,6 +93,13 @@ DefaultTabController getWidget() {
                         },
                       ),
                     ),
+                    Padding(
+                        padding: EdgeInsets.only(left: 15.0),
+                        child: Image.asset(
+                          Constant.ASSETS_IMG + 'ic_launcher.png',
+                          width: 40.0,
+                          height: 40.0,
+                        )),
                   ]),
                   alignment: Alignment(0.0, 0.0),
                 ),
@@ -169,7 +211,10 @@ class _SliverContainerState extends State<SliverContainer> {
     );
   }
 
-  double singleLineImgHeight = 180.0;
+  ///没有视频的高度
+  double singleLineImgHeight = 380.0;
+
+  ///有视频的高度
   double contentVideoHeight = 350.0;
 
   ///列表的普通单个item
@@ -178,6 +223,7 @@ class _SliverContainerState extends State<SliverContainer> {
     bool showVideo = index == 1 || index == 3;
     return Container(
       height: showVideo ? contentVideoHeight : singleLineImgHeight,
+      // height: double.infinity,
       color: Colors.white,
       margin: const EdgeInsets.only(bottom: 10.0),
       padding: const EdgeInsets.only(
@@ -188,28 +234,15 @@ class _SliverContainerState extends State<SliverContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              CircleAvatar(
-                radius: 25.0,
-                backgroundImage: NetworkImage(item.casts[0].avatars.medium),
-                backgroundColor: Colors.white,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(item.title),
-              ),
-              Expanded(
-                child: Align(
-                  child: Icon(
-                    Icons.more_horiz,
-                    color: Colors.grey,
-                    size: 18.0,
-                  ),
-                  alignment: Alignment.centerRight,
-                ),
-              )
-            ],
+          TextField(
+            decoration: InputDecoration(
+                // contentPadding: const EdgeInsets.only(top: 8.0),
+                contentPadding: EdgeInsets.all(0),
+                border: InputBorder.none,
+                hintText: item.title,
+                hintStyle: TextStyle(
+                    fontSize: 17, color: Color.fromARGB(255, 192, 191, 191))),
+            style: TextStyle(fontSize: 17),
           ),
           Expanded(
               child: Container(
@@ -220,6 +253,7 @@ class _SliverContainerState extends State<SliverContainer> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                Text("2020-10-29 20:55:11"),
                 Image.asset(
                   Constant.ASSETS_IMG + 'ic_vote.png',
                   width: 25.0,
@@ -244,6 +278,7 @@ class _SliverContainerState extends State<SliverContainer> {
     );
   }
 
+  /// 图片类型的布局
   getItemCenterImg(Subject item) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -256,16 +291,19 @@ class _SliverContainerState extends State<SliverContainer> {
                     bottomLeft: Radius.circular(5.0)),
               )),
         ),
-        Expanded(
-          child: RadiusImg.get(item.casts[1].avatars.medium, null, radius: 0.0),
-        ),
-        Expanded(
-          child: RadiusImg.get(item.casts[2].avatars.medium, null,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(5.0),
-                      bottomRight: Radius.circular(5.0)))),
-        )
+        Column(children: <Widget>[
+          Expanded(
+            child:
+                RadiusImg.get(item.casts[1].avatars.medium, null, radius: 0.0),
+          ),
+          Expanded(
+            child: RadiusImg.get(item.casts[2].avatars.medium, null,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(5.0),
+                        bottomRight: Radius.circular(5.0)))),
+          )
+        ]),
       ],
     );
   }
